@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">duckplyr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.4.1.9006</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9905</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,35 @@
     </div>
 
     <div class="section level2">
+      <h2 id="using-duckplyr">Using duckplyr<a class="anchor" aria-label="anchor" href="#using-duckplyr"></a></h2>
+
+
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="duck_tbl.html">duck_tbl()</a></code> <code><a href="duck_tbl.html">as_duck_tbl()</a></code> <code><a href="duck_tbl.html">is_duck_tbl()</a></code>
+
+        </dt>
+        <dd>duckplyr data frames</dd>
+      </dl><dl><dt>
+
+          <code><a href="duck_file.html">duck_parquet()</a></code> <code><a href="duck_file.html">duck_csv()</a></code> <code><a href="duck_file.html">duck_json()</a></code> <code><a href="duck_file.html">duck_file()</a></code>
+
+        </dt>
+        <dd>Read Parquet, CSV, and other files using DuckDB</dd>
+      </dl><dl><dt>
+
+          <code><a href="duck_sql.html">duck_sql()</a></code>
+          <span class="badge lifecycle lifecycle-experimental">experimental</span>
+        </dt>
+        <dd>Return SQL query as duck_tbl</dd>
+      </dl></div><div class="section level2">
       <h2 id="dplyr-verbs">dplyr verbs<a class="anchor" aria-label="anchor" href="#dplyr-verbs"></a></h2>
 
 
@@ -252,29 +281,6 @@
         </dt>
         <dd>Verbs not implemented in duckplyr</dd>
       </dl></div><div class="section level2">
-      <h2 id="using-duckplyr-for-single-data-frames">Using duckplyr for single data frames<a class="anchor" aria-label="anchor" href="#using-duckplyr-for-single-data-frames"></a></h2>
-
-
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="as_duckplyr_df.html">as_duckplyr_df()</a></code> <code><a href="as_duckplyr_df.html">as_duckplyr_tibble()</a></code>
-
-        </dt>
-        <dd>Convert to a duckplyr data frame</dd>
-      </dl><dl><dt>
-
-          <code><a href="is_duckplyr_df.html">is_duckplyr_df()</a></code>
-
-        </dt>
-        <dd>Class predicate for duckplyr data frames</dd>
-      </dl></div><div class="section level2">
       <h2 id="using-duckplyr-for-all-data-frames">Using duckplyr for all data frames<a class="anchor" aria-label="anchor" href="#using-duckplyr-for-all-data-frames"></a></h2>
 
 
@@ -292,8 +298,8 @@
         </dt>
         <dd>Forward all dplyr methods to duckplyr</dd>
       </dl></div><div class="section level2">
-      <h2 id="data-ingestion">Data ingestion<a class="anchor" aria-label="anchor" href="#data-ingestion"></a></h2>
 
+      <h3 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h3>
 
 
 
@@ -304,10 +310,10 @@
 
       <dl><dt>
 
-          <code><a href="df_from_file.html">df_from_file()</a></code> <code><a href="df_from_file.html">duckplyr_df_from_file()</a></code> <code><a href="df_from_file.html">df_from_csv()</a></code> <code><a href="df_from_file.html">duckplyr_df_from_csv()</a></code> <code><a href="df_from_file.html">df_from_parquet()</a></code> <code><a href="df_from_file.html">duckplyr_df_from_parquet()</a></code> <code><a href="df_from_file.html">df_to_parquet()</a></code>
+          <code><a href="flights_df.html">flights_df()</a></code>
 
         </dt>
-        <dd>Read Parquet, CSV, and other files using DuckDB</dd>
+        <dd>Flight data</dd>
       </dl></div><div class="section level2">
       <h2 id="configuration-telemetry-and-internals">Configuration, telemetry, and internals<a class="anchor" aria-label="anchor" href="#configuration-telemetry-and-internals"></a></h2>
 
@@ -345,7 +351,7 @@
         <dd>Retrieve details about the most recent computation</dd>
       </dl><dl><dt>
 
-          <code><a href="duckplyr_execute.html">duckplyr_execute()</a></code>
+          <code><a href="duck_exec.html">duck_exec()</a></code>
 
         </dt>
         <dd>Execute a statement for the default connection</dd>
