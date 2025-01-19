@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">duckplyr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9907</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9918</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,13 +88,13 @@ session wide</strong>,</p>
 <ul>
 <li>do <strong>not</strong> load duckplyr with
 <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code>.</li>
-<li>use <code><a href="../reference/duck_tbl.html">duckplyr::as_duck_tbl()</a></code> as the first step in your
-pipe, without attaching the package.</li>
+<li>use <code><a href="../reference/duckdb_tibble.html">duckplyr::as_duckdb_tibble()</a></code> as the first step in
+your pipe, without attaching the package.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eager</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/flights_df.html">flights_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/duck_tbl.html">as_duck_tbl</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/duckdb_tibble.html">as_duckdb_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>inflight_delay <span class="op">=</span> <span class="va">arr_delay</span> <span class="op">-</span> <span class="va">dep_delay</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
@@ -105,14 +105,14 @@ pipe, without attaching the package.</li>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="co">#&gt; The <span style="color: #0000BB;">duckplyr</span> package is configured to fall back to <span style="color: #0000BB;">dplyr</span> when it</span></span>
 <span><span class="co">#&gt; encounters an incompatibility. Fallback events can be collected and</span></span>
-<span><span class="co">#&gt; uploaded for analysis to guide future development. By default, no data</span></span>
-<span><span class="co">#&gt; will be collected or uploaded.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Fallback uploading is not controlled and therefore disabled, see</span></span>
-<span><span class="co">#&gt;   `?duckplyr::fallback()`.</span></span>
+<span><span class="co">#&gt; uploaded for analysis to guide future development. By default, data will</span></span>
+<span><span class="co">#&gt; be collected but no data will be uploaded.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Automatic fallback uploading is not controlled and therefore disabled,</span></span>
+<span><span class="co">#&gt;   see `?duckplyr::fallback()`.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Number of reports ready for upload: <span style="font-weight: bold;">2</span>.</span></span>
 <span><span class="co">#&gt; → Review with `duckplyr::fallback_review()`, upload with</span></span>
 <span><span class="co">#&gt;   `duckplyr::fallback_upload()`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">This message can be disabled by setting `DUCKPLYR_FALLBACK_AUTOUPLOAD`.</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Configure automatic uploading with `duckplyr::fallback_config()`.</span></span></span></code></pre></div>
 <p>The result is a tibble, with its own class.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">eager</span><span class="op">)</span></span>
@@ -187,7 +187,7 @@ the second half of the year.</p>
 first request.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eager</span><span class="op">$</span><span class="va">mean_inflight_delay</span></span>
-<span><span class="co">#&gt; [1] -5.147220 -7.356713 -2.673124 -4.244284 -9.370201 -3.855519</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] -5.147220 -9.370201 -7.356713 -2.673124 -4.244284 -3.855519</span></span></code></pre></div>
 <p>After the computation has been carried out, the results are preserved
 and available immediately:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -196,26 +196,27 @@ and available immediately:</p>
 <span><span class="co">#&gt;    year month mean_inflight_delay median_inflight_delay</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>013     2               -<span style="color: #BB0000;">5.15</span>                    -<span style="color: #BB0000;">6</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>013     3               -<span style="color: #BB0000;">7.36</span>                    -<span style="color: #BB0000;">9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  <span style="text-decoration: underline;">2</span>013     4               -<span style="color: #BB0000;">2.67</span>                    -<span style="color: #BB0000;">5</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  <span style="text-decoration: underline;">2</span>013     6               -<span style="color: #BB0000;">4.24</span>                    -<span style="color: #BB0000;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  <span style="text-decoration: underline;">2</span>013     5               -<span style="color: #BB0000;">9.37</span>                   -<span style="color: #BB0000;">10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>013     5               -<span style="color: #BB0000;">9.37</span>                   -<span style="color: #BB0000;">10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  <span style="text-decoration: underline;">2</span>013     3               -<span style="color: #BB0000;">7.36</span>                    -<span style="color: #BB0000;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  <span style="text-decoration: underline;">2</span>013     4               -<span style="color: #BB0000;">2.67</span>                    -<span style="color: #BB0000;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  <span style="text-decoration: underline;">2</span>013     6               -<span style="color: #BB0000;">4.24</span>                    -<span style="color: #BB0000;">7</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>  <span style="text-decoration: underline;">2</span>013     1               -<span style="color: #BB0000;">3.86</span>                    -<span style="color: #BB0000;">5</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="eager-and-lazy-modes">Eager and lazy modes<a class="anchor" aria-label="anchor" href="#eager-and-lazy-modes"></a>
 </h2>
-<p>The default mode for <code><a href="../reference/duck_tbl.html">as_duck_tbl()</a></code> is eager. This allows
-applying all data frame operations on the results, including column
-subsetting or retrieving the number of rows. In addition, if an
+<p>The default mode for <code><a href="../reference/duckdb_tibble.html">as_duckdb_tibble()</a></code> is eager. This
+allows applying all data frame operations on the results, including
+column subsetting or retrieving the number of rows. In addition, if an
 operation cannot be carried out by duckdb, the dplyr fallback is used
 transparently. Use <code>.lazy = TRUE</code> to ensure that all
 operations are carried out by DuckDB, or fail. This is also the default
-for the ingestion functions such as <code><a href="../reference/duck_file.html">duck_parquet()</a></code>.</p>
+for the ingestion functions such as
+<code><a href="../reference/read_file_duckdb.html">read_parquet_duckdb()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lazy</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/flights_df.html">flights_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/duck_tbl.html">as_duck_tbl</a></span><span class="op">(</span>.lazy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/duckdb_tibble.html">as_duckdb_tibble</a></span><span class="op">(</span>.lazy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Columns or the row count cannot be accessed directly in this
 mode:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -230,7 +231,15 @@ mode:</p>
 <span>    mean_inflight_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">inflight_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>    median_inflight_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">inflight_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt; Error: Materialization is disabled, use collect() or as_tibble() to materialize</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `summarize()`:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> This operation cannot be carried out by DuckDB, and the input is</span></span>
+<span><span class="co">#&gt;   a lazy duckplyr frame.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Use `compute(lazy = FALSE)` to materialize to temporary storage and</span></span>
+<span><span class="co">#&gt;   continue with <span style="color: #0000BB;">duckplyr</span>.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> See the "Eager and lazy" section in `?duckdb_tibble()` for other</span></span>
+<span><span class="co">#&gt;   options.</span></span>
+<span><span class="co">#&gt; <span style="font-weight: bold;">Caused by error in `rel_translate_lang()` at duckplyr/R/translate.R:371:5:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Can't translate named argument `mean(na.rm = )`.</span></span></code></pre></div>
 <p>See <code><a href="../articles/limits.html">vignette("limits")</a></code> for current limitations, and the
 contributing guide for how to add support for additional operations.</p>
 </div>

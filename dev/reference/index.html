@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">duckplyr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9907</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9918</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,22 +48,22 @@
 
       <dl><dt>
 
-          <code><a href="duck_tbl.html">duck_tbl()</a></code> <code><a href="duck_tbl.html">as_duck_tbl()</a></code> <code><a href="duck_tbl.html">is_duck_tbl()</a></code>
+          <code><a href="duckdb_tibble.html">duckdb_tibble()</a></code> <code><a href="duckdb_tibble.html">as_duckdb_tibble()</a></code> <code><a href="duckdb_tibble.html">is_duckdb_tibble()</a></code>
 
         </dt>
         <dd>duckplyr data frames</dd>
       </dl><dl><dt>
 
-          <code><a href="duck_file.html">duck_parquet()</a></code> <code><a href="duck_file.html">duck_csv()</a></code> <code><a href="duck_file.html">duck_json()</a></code> <code><a href="duck_file.html">duck_file()</a></code>
+          <code><a href="read_file_duckdb.html">read_parquet_duckdb()</a></code> <code><a href="read_file_duckdb.html">read_csv_duckdb()</a></code> <code><a href="read_file_duckdb.html">read_json_duckdb()</a></code> <code><a href="read_file_duckdb.html">read_file_duckdb()</a></code>
 
         </dt>
         <dd>Read Parquet, CSV, and other files using DuckDB</dd>
       </dl><dl><dt>
 
-          <code><a href="duck_sql.html">duck_sql()</a></code>
+          <code><a href="read_sql_duckdb.html">read_sql_duckdb()</a></code>
           <span class="badge lifecycle lifecycle-experimental">experimental</span>
         </dt>
-        <dd>Return SQL query as duck_tbl</dd>
+        <dd>Return SQL query as duckdb_tibble</dd>
       </dl></div><div class="section level2">
       <h2 id="dplyr-verbs">dplyr verbs<a class="anchor" aria-label="anchor" href="#dplyr-verbs"></a></h2>
 
@@ -72,7 +72,7 @@
 
     </div><div class="section level2">
 
-      <h3 id="connecting-copying-and-retrieving-data">Connecting, copying, and retrieving data<a class="anchor" aria-label="anchor" href="#connecting-copying-and-retrieving-data"></a></h3>
+      <h3 id="computing-and-materializing-data">Computing and materializing data<a class="anchor" aria-label="anchor" href="#computing-and-materializing-data"></a></h3>
 
 
 
@@ -82,6 +82,24 @@
 
 
       <dl><dt>
+
+          <code><a href="compute.duckplyr_df.html">compute(<i>&lt;duckplyr_df&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Compute results</dd>
+      </dl><dl><dt>
+
+          <code><a href="compute_file.html">compute_parquet()</a></code> <code><a href="compute_file.html">compute_csv()</a></code>
+
+        </dt>
+        <dd>Compute results to a file</dd>
+      </dl><dl><dt>
+
+          <code><a href="collect.duckplyr_df.html">collect(<i>&lt;duckplyr_df&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Force conversion to a data frame</dd>
+      </dl><dl><dt>
 
           <code><a href="pull.duckplyr_df.html">pull(<i>&lt;duckplyr_df&gt;</i>)</a></code>
 
@@ -144,7 +162,7 @@
           <code><a href="mutate.duckplyr_df.html">mutate(<i>&lt;duckplyr_df&gt;</i>)</a></code>
 
         </dt>
-        <dd>Create, modify, and delete columns (duckplyr)</dd>
+        <dd>Create, modify, and delete columns</dd>
       </dl><dl><dt>
 
           <code><a href="transmute.duckplyr_df.html">transmute(<i>&lt;duckplyr_df&gt;</i>)</a></code>
@@ -247,6 +265,12 @@
         <dd>Intersect</dd>
       </dl><dl><dt>
 
+          <code><a href="union.duckplyr_df.html">union(<i>&lt;duckplyr_df&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Union</dd>
+      </dl><dl><dt>
+
           <code><a href="union_all.duckplyr_df.html">union_all(<i>&lt;duckplyr_df&gt;</i>)</a></code>
 
         </dt>
@@ -256,7 +280,7 @@
           <code><a href="setdiff.duckplyr_df.html">setdiff(<i>&lt;duckplyr_df&gt;</i>)</a></code>
 
         </dt>
-        <dd>Set diff</dd>
+        <dd>Set difference</dd>
       </dl><dl><dt>
 
           <code><a href="symdiff.duckplyr_df.html">symdiff(<i>&lt;duckplyr_df&gt;</i>)</a></code>
@@ -276,7 +300,7 @@
 
       <dl><dt>
 
-          <code><a href="not-supported.html">not-supported</a></code>
+          <code><a href="unsupported.html">unsupported</a></code>
 
         </dt>
         <dd>Verbs not implemented in duckplyr</dd>
@@ -333,7 +357,7 @@
         <dd>Configuration options</dd>
       </dl><dl><dt>
 
-          <code><a href="fallback.html">fallback_sitrep()</a></code> <code><a href="fallback.html">fallback_review()</a></code> <code><a href="fallback.html">fallback_upload()</a></code> <code><a href="fallback.html">fallback_purge()</a></code>
+          <code><a href="fallback.html">fallback_sitrep()</a></code> <code><a href="fallback.html">fallback_config()</a></code> <code><a href="fallback.html">fallback_review()</a></code> <code><a href="fallback.html">fallback_upload()</a></code> <code><a href="fallback.html">fallback_purge()</a></code>
 
         </dt>
         <dd>Fallback to dplyr</dd>
@@ -351,7 +375,7 @@
         <dd>Retrieve details about the most recent computation</dd>
       </dl><dl><dt>
 
-          <code><a href="duck_exec.html">duck_exec()</a></code>
+          <code><a href="db_exec.html">db_exec()</a></code>
 
         </dt>
         <dd>Execute a statement for the default connection</dd>
