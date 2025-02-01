@@ -53,7 +53,7 @@ fallback_purge() deletes some or all available reports."><meta property="og:imag
 
     <a class="navbar-brand me-2" href="../index.html">duckplyr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9918</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9927</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,8 +64,13 @@ fallback_purge() deletes some or all available reports."><meta property="og:imag
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/developers.html">Use of duckplyr in other packages</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/large.html">Large data</a></li>
+    <li><a class="dropdown-item" href="../articles/prudence.html">Memory protection: Prudence</a></li>
     <li><a class="dropdown-item" href="../articles/limits.html">Translations</a></li>
+    <li><a class="dropdown-item" href="../articles/developers.html">Selective use of duckplyr</a></li>
+    <li><a class="dropdown-item" href="../articles/telemetry.html">Telemetry</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/index.html">More articles...</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -232,8 +237,7 @@ and mostly useful for <span class="pkg">duckplyr</span>'s internal tests.</p></l
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Fallback logging is enabled.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Fallback logging is not controlled, see `?duckplyr::fallback()`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Logs are written to <span style="color: #0000BB;">/home/runner/.cache/R/duckplyr/telemetry</span>.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Automatic fallback uploading is not controlled and therefore disabled,</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   see `?duckplyr::fallback()`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Automatic fallback uploading is disabled.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Number of reports ready for upload: <span style="font-weight: bold;">2</span>.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> → Review with `duckplyr::fallback_review()`, upload with</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   `duckplyr::fallback_upload()`.</span>

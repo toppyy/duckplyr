@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="index.html">duckplyr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9918</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.99.99.9927</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,8 +45,13 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/developers.html">Use of duckplyr in other packages</a></li>
+<li><a class="dropdown-item" href="articles/large.html">Large data</a></li>
+    <li><a class="dropdown-item" href="articles/prudence.html">Memory protection: Prudence</a></li>
     <li><a class="dropdown-item" href="articles/limits.html">Translations</a></li>
+    <li><a class="dropdown-item" href="articles/developers.html">Selective use of duckplyr</a></li>
+    <li><a class="dropdown-item" href="articles/telemetry.html">Telemetry</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="articles/index.html">More articles...</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -74,7 +79,8 @@
 <blockquote>
 <p>A <strong>drop-in replacement</strong> for dplyr, powered by DuckDB for <strong>fast operation</strong>.</p>
 </blockquote>
-<p><a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a> is the grammar of data manipulation in the tidyverse. The duckplyr package will run all of your existing dplyr code with identical results, using <a href="https://duckdb.org/" class="external-link">DuckDB</a> where possible to compute the results faster. In addition, you can analyze larger-than-memory datasets straight from files on your disk or from the web. If you are new to dplyr, the best place to start is the <a href="https://r4ds.hadley.nz/data-transform" class="external-link">data transformation chapter</a> in R for Data Science.</p>
+<p><a href="https://dplyr.tidyverse.org/" class="external-link">dplyr</a> is the grammar of data manipulation in the tidyverse. The duckplyr package will run all of your existing dplyr code with identical results, using <a href="https://duckdb.org/" class="external-link">DuckDB</a> where possible to compute the results faster. In addition, you can analyze larger-than-memory datasets straight from files on your disk or from the web.</p>
+<p>If you are new to dplyr, the best place to start is the <a href="https://r4ds.hadley.nz/data-transform" class="external-link">data transformation chapter</a> in R for Data Science.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -100,7 +106,7 @@
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Turn off with `duckplyr::methods_restore()`.</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://conflicted.r-lib.org/reference/conflict_prefer.html" class="external-link">conflict_prefer</a></span><span class="op">(</span><span class="st">"filter"</span>, <span class="st">"dplyr"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>The following code aggregates the inflight delay by year and month for the first half of the year. We use a variant of the <code><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">nycflights13::flights</a></code> dataset that works around an incompatibility with duckplyr.</p>
+<p>The following code aggregates the inflight delay by year and month for the first half of the year. We use a variant of the <code><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">nycflights13::flights</a></code> dataset, where the timezone has been set to UTC to work around a current limitation of duckplyr, see <code>vignette("limits.html")</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/flights_df.html">flights_df</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 336,776 × 19</span></span></span>
@@ -123,14 +129,14 @@
 <span><span class="co">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">air_time</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">distance</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">hour</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">minute</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">time_hour</span><span style="color: #949494;"> &lt;dttm&gt;</span></span></span>
 <span></span>
 <span><span class="va">out</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="reference/flights_df.html">flights_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>inflight_delay <span class="op">=</span> <span class="va">arr_delay</span> <span class="op">-</span> <span class="va">dep_delay</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="reference/flights_df.html">flights_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">arr_delay</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>inflight_delay <span class="op">=</span> <span class="va">arr_delay</span> <span class="op">-</span> <span class="va">dep_delay</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span></span>
 <span>    .by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span><span class="op">)</span>,</span>
 <span>    mean_inflight_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">inflight_delay</span><span class="op">)</span>,</span>
 <span>    median_inflight_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">inflight_delay</span><span class="op">)</span>,</span>
-<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">&lt;=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <p>The result is a plain tibble:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -139,29 +145,42 @@
 <p>Nothing has been computed yet. Querying the number of rows, or a column, starts the computation:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span><span class="op">$</span><span class="va">month</span></span>
-<span><span class="co">#&gt; [1] 2 1 5 3 6 4</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 4 2 1 5 3 6</span></span></code></pre></div>
 <p>Note that, unlike dplyr, the results are not ordered, see <code><a href="reference/config.html">?config</a></code> for details. However, once materialized, the results are stable:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;    <span style="font-weight: bold;">year</span> <span style="font-weight: bold;">month</span> <span style="font-weight: bold;">mean_inflight_delay</span> <span style="font-weight: bold;">median_inflight_delay</span></span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>013     2               -<span style="color: #BB0000;">5.15</span>                    -<span style="color: #BB0000;">6</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>013     1               -<span style="color: #BB0000;">3.86</span>                    -<span style="color: #BB0000;">5</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  <span style="text-decoration: underline;">2</span>013     5               -<span style="color: #BB0000;">9.37</span>                   -<span style="color: #BB0000;">10</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  <span style="text-decoration: underline;">2</span>013     3               -<span style="color: #BB0000;">7.36</span>                    -<span style="color: #BB0000;">9</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  <span style="text-decoration: underline;">2</span>013     6               -<span style="color: #BB0000;">4.24</span>                    -<span style="color: #BB0000;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>  <span style="text-decoration: underline;">2</span>013     4               -<span style="color: #BB0000;">2.67</span>                    -<span style="color: #BB0000;">5</span></span></span></code></pre></div>
-<p>Restart R, or call <code><a href="reference/methods_overwrite.html">duckplyr::methods_restore()</a></code> to revert to the default dplyr implementation.</p>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>013     4               -<span style="color: #BB0000;">2.67</span>                    -<span style="color: #BB0000;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>013     2               -<span style="color: #BB0000;">5.15</span>                    -<span style="color: #BB0000;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  <span style="text-decoration: underline;">2</span>013     1               -<span style="color: #BB0000;">3.86</span>                    -<span style="color: #BB0000;">5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>  <span style="text-decoration: underline;">2</span>013     5               -<span style="color: #BB0000;">9.37</span>                   -<span style="color: #BB0000;">10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>  <span style="text-decoration: underline;">2</span>013     3               -<span style="color: #BB0000;">7.36</span>                    -<span style="color: #BB0000;">9</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>  <span style="text-decoration: underline;">2</span>013     6               -<span style="color: #BB0000;">4.24</span>                    -<span style="color: #BB0000;">7</span></span></span></code></pre></div>
+<p>If a computation is not supported by DuckDB, duckplyr will automatically fall back to dplyr.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/flights_df.html">flights_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span></span>
+<span>    .by <span class="op">=</span> <span class="va">origin</span>,</span>
+<span>    dest <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">" "</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
+<span><span class="co">#&gt;   <span style="font-weight: bold;">origin</span> <span style="font-weight: bold;">dest</span>                                                                   </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                                  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> EWR    ALB ALB ALB ALB ALB ALB ALB ALB ALB ALB ALB ALB ALB ALB ALB ALB ALB AL…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> LGA    ATL ATL ATL ATL ATL ATL ATL ATL ATL ATL ATL ATL ATL ATL ATL ATL ATL AT…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> JFK    ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ ABQ AB…</span></span></code></pre></div>
+<p>Restart R, or call <code><a href="reference/methods_overwrite.html">duckplyr::methods_restore()</a></code> to revert to the default dplyr implementation.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="reference/methods_overwrite.html">methods_restore</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Restoring <span style="color: #0000BB;">dplyr</span> methods.</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="analyzing-larger-than-memory-data">Analyzing larger-than-memory data<a class="anchor" aria-label="anchor" href="#analyzing-larger-than-memory-data"></a>
 </h2>
-<p>An extended variant of this dataset is also available for download as Parquet files.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>An extended variant of the <code><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">nycflights13::flights</a></code> dataset is also available for download as Parquet files.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">year</span> <span class="op">&lt;-</span> <span class="fl">2022</span><span class="op">:</span><span class="fl">2024</span></span>
 <span><span class="va">base_url</span> <span class="op">&lt;-</span> <span class="st">"https://blobs.duckdb.org/flight-data-partitioned/"</span></span>
 <span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Year="</span>, <span class="va">year</span>, <span class="st">"/data_0.parquet"</span><span class="op">)</span></span>
@@ -170,18 +189,18 @@
 <span><span class="co">#&gt; [1] "https://blobs.duckdb.org/flight-data-partitioned/Year=2022/data_0.parquet"</span></span>
 <span><span class="co">#&gt; [2] "https://blobs.duckdb.org/flight-data-partitioned/Year=2023/data_0.parquet"</span></span>
 <span><span class="co">#&gt; [3] "https://blobs.duckdb.org/flight-data-partitioned/Year=2024/data_0.parquet"</span></span></code></pre></div>
-<p>Using the httpfs DuckDB extension, we can query these files directly from R, without even downloading them first.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<p>Using the <a href="https://duckdb.org/docs/extensions/httpfs/overview.html" class="external-link">httpfs DuckDB extension</a>, we can query these files directly from R, without even downloading them first.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/db_exec.html">db_exec</a></span><span class="op">(</span><span class="st">"INSTALL httpfs"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/db_exec.html">db_exec</a></span><span class="op">(</span><span class="st">"LOAD httpfs"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">flights</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/read_file_duckdb.html">read_parquet_duckdb</a></span><span class="op">(</span><span class="va">urls</span><span class="op">)</span></span></code></pre></div>
-<p>Unlike with local data frames, the default is to disallow automatic materialization of the results on access.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error: Materialization is disabled, use collect() or as_tibble() to materialize.</span></span></code></pre></div>
-<p>Queries on the remote data are executed lazily, and the results are not materialized until explicitly requested. For printing, only the first few rows of the result are fetched.</p>
+<p>Like with local data frames, queries on the remote data are executed lazily. Unlike with local data frames, the default is to disallow automatic materialization if the result is too large in order to protect memory: the results are not materialized until explicitly requested, with a <code><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect()</a></code> call for instance.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">flights</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error: Materialization would result in more than 9090 rows. Use collect() or as_tibble() to materialize.</span></span></code></pre></div>
+<p>For printing, only the first few rows of the result are fetched.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A duckplyr data frame: 110 variables</span></span></span>
 <span><span class="co">#&gt;     <span style="font-weight: bold;">Year</span> <span style="font-weight: bold;">Quarter</span> <span style="font-weight: bold;">Month</span> <span style="font-weight: bold;">DayofMonth</span> <span style="font-weight: bold;">DayOfWeek</span> <span style="font-weight: bold;">FlightDate</span> <span style="font-weight: bold;">Reporti…¹</span> <span style="font-weight: bold;">DOT_I…²</span> <span style="font-weight: bold;">IATA_…³</span></span></span>
@@ -208,7 +227,7 @@
 <span><span class="co">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">DestCityName</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">DestState</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">DestStateFips</span><span style="color: #949494;"> &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">DestStateName</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">DestWac</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">CRSDepTime</span><span style="color: #949494;"> &lt;chr&gt;, </span><span style="color: #949494; font-weight: bold;">DepTime</span><span style="color: #949494;"> &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   </span><span style="color: #949494; font-weight: bold;">DepDelay</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">DepDelayMinutes</span><span style="color: #949494;"> &lt;dbl&gt;, </span><span style="color: #949494; font-weight: bold;">DepDel15</span><span style="color: #949494;"> &lt;dbl&gt;, …</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">Year</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A duckplyr data frame: 2 variables</span></span></span>
@@ -218,7 +237,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>023 6<span style="text-decoration: underline;">847</span>899</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>  <span style="text-decoration: underline;">2</span>024 3<span style="text-decoration: underline;">461</span>319</span></span></code></pre></div>
 <p>Complex queries can be executed on the remote data. Note how only the relevant columns are fetched and the 2024 data isn’t even touched, as it’s not needed for the result.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">flights</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">DepDelay</span><span class="op">)</span>, <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">ArrDelay</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -277,10 +296,9 @@
 <span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
 <span><span class="co">#&gt; │           FILTER          │</span></span>
 <span><span class="co">#&gt; │    --------------------   │</span></span>
-<span><span class="co">#&gt; │ ((NOT ((DepDelay IS NULL) │</span></span>
-<span><span class="co">#&gt; │  OR isnan(DepDelay))) AND │</span></span>
-<span><span class="co">#&gt; │  (NOT ((ArrDelay IS NULL) │</span></span>
-<span><span class="co">#&gt; │    OR isnan(ArrDelay))))  │</span></span>
+<span><span class="co">#&gt; │ ((NOT (DepDelay IS NULL)) │</span></span>
+<span><span class="co">#&gt; │    AND (NOT (ArrDelay IS  │</span></span>
+<span><span class="co">#&gt; │           NULL)))         │</span></span>
 <span><span class="co">#&gt; │                           │</span></span>
 <span><span class="co">#&gt; │       ~2691650 Rows       │</span></span>
 <span><span class="co">#&gt; └-------------┬-------------┘</span></span>
@@ -311,79 +329,41 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A duckplyr data frame: 4 variables</span></span></span>
 <span><span class="co">#&gt;     <span style="font-weight: bold;">Year</span> <span style="font-weight: bold;">Month</span> <span style="font-weight: bold;">MeanInFlightDelay</span> <span style="font-weight: bold;">MedianInFlightDelay</span></span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>022    11             -<span style="color: #BB0000;">5.21</span>                  -<span style="color: #BB0000;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>023    11             -<span style="color: #BB0000;">7.10</span>                  -<span style="color: #BB0000;">8</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>022     7             -<span style="color: #BB0000;">5.13</span>                  -<span style="color: #BB0000;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>022     8             -<span style="color: #BB0000;">5.27</span>                  -<span style="color: #BB0000;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>023     4             -<span style="color: #BB0000;">4.54</span>                  -<span style="color: #BB0000;">6</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>022     4             -<span style="color: #BB0000;">4.88</span>                  -<span style="color: #BB0000;">6</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>023     8             -<span style="color: #BB0000;">5.73</span>                  -<span style="color: #BB0000;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>023     7             -<span style="color: #BB0000;">4.47</span>                  -<span style="color: #BB0000;">7</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>022     1             -<span style="color: #BB0000;">6.88</span>                  -<span style="color: #BB0000;">8</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>023    12             -<span style="color: #BB0000;">7.71</span>                  -<span style="color: #BB0000;">8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>022     9             -<span style="color: #BB0000;">6.00</span>                  -<span style="color: #BB0000;">7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>022     5             -<span style="color: #BB0000;">5.11</span>                  -<span style="color: #BB0000;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>023     5             -<span style="color: #BB0000;">6.17</span>                  -<span style="color: #BB0000;">7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>023     9             -<span style="color: #BB0000;">5.37</span>                  -<span style="color: #BB0000;">7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>022     1             -<span style="color: #BB0000;">6.88</span>                  -<span style="color: #BB0000;">8</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>023     4             -<span style="color: #BB0000;">4.54</span>                  -<span style="color: #BB0000;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>022     4             -<span style="color: #BB0000;">4.88</span>                  -<span style="color: #BB0000;">6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>023     1             -<span style="color: #BB0000;">5.06</span>                  -<span style="color: #BB0000;">7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>022    10             -<span style="color: #BB0000;">5.99</span>                  -<span style="color: #BB0000;">7</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>022     2             -<span style="color: #BB0000;">6.52</span>                  -<span style="color: #BB0000;">8</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ more rows</span></span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   1.822   0.510  10.065</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.955   0.377   8.586</span></span></code></pre></div>
 <p>Over 10M rows analyzed in about 10 seconds over the internet, that’s not bad. Of course, working with Parquet, CSV, or JSON files downloaded locally is possible as well.</p>
 </div>
 <div class="section level2">
-<h2 id="using-duckplyr-in-other-packages">Using duckplyr in other packages<a class="anchor" aria-label="anchor" href="#using-duckplyr-in-other-packages"></a>
+<h2 id="further-reading">Further reading<a class="anchor" aria-label="anchor" href="#further-reading"></a>
 </h2>
-<p>Refer to <code><a href="articles/developers.html">vignette("developers", package = "duckplyr")</a></code>.</p>
+<ul>
+<li><p><code><a href="articles/large.html">vignette("large")</a></code>: Tools for working with large data</p></li>
+<li><p><code><a href="articles/prudence.html">vignette("prudence")</a></code>: How duckplyr can help protect memory when working with large data</p></li>
+<li><p><code><a href="articles/limits.html">vignette("limits")</a></code>: Translation of dplyr employed by duckplyr, and current limitations</p></li>
+<li><p><code><a href="articles/developers.html">vignette("developers")</a></code>: Using duckplyr for individual data frames and in other packages</p></li>
+<li><p><code><a href="articles/telemetry.html">vignette("telemetry")</a></code>: Telemetry in duckplyr</p></li>
+</ul>
 </div>
 <div class="section level2">
-<h2 id="telemetry">Telemetry<a class="anchor" aria-label="anchor" href="#telemetry"></a>
+<h2 id="getting-help">Getting help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
 </h2>
-<p>As a drop-in replacement for dplyr, duckplyr will use DuckDB for the operations only if it can, and fall back to dplyr otherwise. A fallback will not change the correctness of the results, but it may be slower or consume more memory. We would like to guide our efforts towards improving duckplyr, focusing on the features with the most impact. To this end, duckplyr collects and uploads telemetry data about fallback situations, but only if permitted by the user:</p>
-<ul>
-<li>Collection is on by default, but can be turned off.</li>
-<li>Uploads are done upon request only.</li>
-<li>There is an option to automatically upload when the package is loaded, this is also opt-in.</li>
-</ul>
-<p>The data collected contains:</p>
-<ul>
-<li>The package version</li>
-<li>The error message</li>
-<li>The operation being performed, and the arguments
-<ul>
-<li>For the input data frames, only the structure is included (column types only), no column names or data</li>
-</ul>
-</li>
-</ul>
-<p>Fallback is silent by default, but can be made verbose.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>DUCKPLYR_FALLBACK_INFO <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">out</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu">nycflights13</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/nycflights13/man/flights.html" class="external-link">flights</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="reference/duckdb_tibble.html">as_duckdb_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>inflight_delay <span class="op">=</span> <span class="va">arr_delay</span> <span class="op">-</span> <span class="va">dep_delay</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error processing duckplyr query with DuckDB, falling back to dplyr.</span></span>
-<span><span class="co">#&gt; <span style="font-weight: bold;">Caused by error in `check_df_for_rel()` at duckplyr/R/relational-duckdb.R:108:3:</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> Attributes are lost during conversion. Affected column: `time_hour`.</span></span></code></pre></div>
-<p>After logs have been collected, the upload options are displayed the next time the duckplyr package is loaded in an R session.</p>
-<pre><code><span><span class="co">#&gt; The <span style="color: #0000BB;">duckplyr</span> package is configured to fall back to <span style="color: #0000BB;">dplyr</span> when it encounters an</span></span>
-<span><span class="co">#&gt; incompatibility. Fallback events can be collected and uploaded for analysis to</span></span>
-<span><span class="co">#&gt; guide future development. By default, data will be collected but no data will</span></span>
-<span><span class="co">#&gt; be uploaded.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Automatic fallback uploading is not controlled and therefore disabled, see</span></span>
-<span><span class="co">#&gt;   `?duckplyr::fallback()`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Number of reports ready for upload: <span style="font-weight: bold;">1</span>.</span></span>
-<span><span class="co">#&gt; → Review with `duckplyr::fallback_review()`, upload with</span></span>
-<span><span class="co">#&gt;   `duckplyr::fallback_upload()`.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> <span style="color: #555555;">Configure automatic uploading with `duckplyr::fallback_config()`.</span></span></span></code></pre>
-<p>The <code><a href="reference/fallback.html">fallback_sitrep()</a></code> function describes the current configuration and the available options.</p>
+<p>If you encounter a clear bug, please file an issue with a minimal reproducible example on <a href="https://github.com/tidyverse/duckplyr/issues" class="external-link">GitHub</a>. For questions and other discussion, please use <a href="https://forum.posit.co/" class="external-link">forum.posit.co</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="how-is-this-different-from-dbplyr">How is this different from dbplyr?<a class="anchor" aria-label="anchor" href="#how-is-this-different-from-dbplyr"></a>
+<h2 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
 </h2>
-<p>The duckplyr package is a dplyr backend that uses DuckDB, a high-performance, embeddable analytical database. It is designed to be a fully compatible drop-in replacement for dplyr, with <em>exactly</em> the same syntax and semantics:</p>
-<ul>
-<li>Input and output are data frames or tibbles.</li>
-<li>All dplyr verbs are supported, with fallback.</li>
-<li>All R data types and functions are supported, with fallback.</li>
-<li>No SQL is generated.</li>
-</ul>
-<p>The dbplyr package is a dplyr backend that connects to SQL databases, and is designed to work with various databases that support SQL, including DuckDB. Data must be copied into and collected from the database, and the syntax and semantics are similar but not identical to plain dplyr.</p>
+<p>Please note that this project is released with a <a href="https://duckplyr.tidyverse.org/CODE_OF_CONDUCT">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -407,6 +387,7 @@
 <h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
 
