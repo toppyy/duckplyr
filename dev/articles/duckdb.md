@@ -5,6 +5,7 @@ duckplyr. Two options are discussed: interoperability with dbplyr and
 the use of DuckDB’s functions in duckplyr.
 
 ``` r
+
 library(conflicted)
 library(duckplyr)
 #> Loading required package: dplyr
@@ -45,6 +46,7 @@ function, introduced in duckplyr 1.1.0, transparently converts a
 duckplyr frame to a dbplyr `tbl` object:
 
 ``` r
+
 df <- duckdb_tibble(a = 2L)
 df
 #> # A duckplyr data frame: 1 variable
@@ -55,7 +57,7 @@ df
 tbl <- as_tbl(df)
 tbl
 #> # Source:   table<as_tbl_duckplyr_SwlKLUUEdL> [?? x 1]
-#> # Database: DuckDB 1.4.3 [unknown@Linux 6.11.0-1018-azure:R 4.5.2//tmp/RtmpAWebrw/duckplyr/duckplyr4b1e77a515b3.duckdb]
+#> # Database: DuckDB 1.5.2 [unknown@Linux 6.17.0-1010-azure:R 4.6.0//tmp/Rtmpv3gGEd/duckplyr/duckplyr3d321b6e4703.duckdb]
 #>       a
 #>   <int>
 #> 1     2
@@ -71,6 +73,7 @@ This allows using arbitrary SQL code, either through
 on dbplyr’s passthrough feature.
 
 ``` r
+
 tbl %>%
   mutate(b = sql("a + 1"), c = least_common_multiple(a, b)) %>%
   show_query()
@@ -86,15 +89,18 @@ There is no R function called `least_common_multiple()`, it is
 interpreted as a SQL function.
 
 ``` r
+
 least_common_multiple(2, 3)
-#> Error in least_common_multiple(2, 3): could not find function "least_common_multiple"
+#> Error in `least_common_multiple()`:
+#> ! could not find function "least_common_multiple"
 ```
 
 ``` r
+
 tbl %>%
   mutate(b = sql("a + 1"), c = least_common_multiple(a, b))
 #> # Source:   SQL [?? x 3]
-#> # Database: DuckDB 1.4.3 [unknown@Linux 6.11.0-1018-azure:R 4.5.2//tmp/RtmpAWebrw/duckplyr/duckplyr4b1e77a515b3.duckdb]
+#> # Database: DuckDB 1.5.2 [unknown@Linux 6.17.0-1010-azure:R 4.6.0//tmp/Rtmpv3gGEd/duckplyr/duckplyr3d321b6e4703.duckdb]
 #>       a     b     c
 #>   <int> <int> <dbl>
 #> 1     2     3     6
@@ -104,6 +110,7 @@ To continue processing with duckplyr, use
 [`as_duckdb_tibble()`](https://duckplyr.tidyverse.org/dev/reference/duckdb_tibble.md):
 
 ``` r
+
 tbl %>%
   mutate(b = sql("a + 1"), c = least_common_multiple(a, b)) %>%
   as_duckdb_tibble()
@@ -120,6 +127,7 @@ arbitrary DuckDB functions directly from duckplyr, without going through
 SQL:
 
 ``` r
+
 duckdb_tibble(a = 2L, b = 3L) %>%
   mutate(c = dd$least_common_multiple(a, b))
 #> # A duckplyr data frame: 3 variables
@@ -151,6 +159,7 @@ This package is not necessary to use duckplyr, and the list of functions
 is incomplete and growing. In case you’re wondering:
 
 ``` r
+
 duckdb_tibble(a = "dbplyr", b = "duckplyr") %>%
   mutate(c = dd$damerau_levenshtein(a, b))
 #> # A duckplyr data frame: 3 variables

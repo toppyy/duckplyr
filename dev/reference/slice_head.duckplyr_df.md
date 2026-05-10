@@ -48,8 +48,6 @@ slice_head(.data, ..., n, prop, by = NULL)
 
 - by:
 
-  **\[experimental\]**
-
   \<[`tidy-select`](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html)\>
   Optionally, a selection of columns to group by for just this
   operation, functioning as an alternative to
@@ -66,8 +64,7 @@ There is no DuckDB translation in `slice_head.duckplyr_df()`
 - with a negative `n`.
 
 These features fall back to
-[`dplyr::slice_head()`](https://dplyr.tidyverse.org/reference/slice.html),
-see
+[`slice_head()`](https://dplyr.tidyverse.org/reference/slice.html), see
 [`vignette("fallback")`](https://duckplyr.tidyverse.org/dev/articles/fallback.md)
 for details.
 

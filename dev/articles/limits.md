@@ -9,6 +9,7 @@ for details. The translation layer can be bypassed, see
 for details.
 
 ``` r
+
 library(conflicted)
 library(dplyr)
 conflict_prefer("filter", "dplyr")
@@ -32,6 +33,7 @@ duckplyr supports the following data types:
 - `is.difftime()`
 
 ``` r
+
 duckplyr::duckdb_tibble(
   logical = TRUE,
   integer = 1L,
@@ -53,8 +55,9 @@ Generally, zero-column tibbles are not supported by duckplyr, neither as
 input nor as a result.
 
 ``` r
+
 duckplyr::duckdb_tibble()
-#> Error in `duckdb_rel_from_df()` at duckplyr/R/duckplyr_df.R:20:5:
+#> Error in `duckdb_rel_from_df()` at duckplyr/R/duckplyr_df.R:26:5:
 #> ! rel_from_df: Can't convert empty data frame to relational.
 duckplyr::duckdb_tibble(a = 1, .prudence = "stingy") |>
   select(-a)
@@ -102,6 +105,7 @@ Implemented: `(`.
 Reference: [`?Paren`](https://rdrr.io/r/base/Paren.html).
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1, b = 2, c = 3, .prudence = "stingy") |>
   mutate((a + b) * c)
 #> # A duckplyr data frame: 4 variables
@@ -117,6 +121,7 @@ Implemented: `>`, `>=`, `<`, `<=`, `==`, `!=`.
 Reference: [`?Comparison`](https://rdrr.io/r/base/Comparison.html).
 
 ``` r
+
 duckplyr::duckdb_tibble(
   a = c(1, 2, NA),
   b = c(2, NA, 3),
@@ -139,6 +144,7 @@ Implemented: `+`, `-`, `*`, `/`.
 Reference: [`?Arithmetic`](https://rdrr.io/r/base/Arithmetic.html).
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1, b = 2, c = 3, .prudence = "stingy") |>
   mutate(a + b, a / b, a - b, a * b)
 #> # A duckplyr data frame: 7 variables
@@ -156,6 +162,7 @@ Implemented: [`log()`](https://rdrr.io/r/base/Log.html),
 Reference: [`?Math`](https://rdrr.io/r/base/groupGeneric.html).
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1, b = 2, c = -3, .prudence = "stingy") |>
   mutate(log10(a), log(b), abs(c))
 #> # A duckplyr data frame: 6 variables
@@ -171,6 +178,7 @@ Implemented: `!`, `&`, `|`.
 Reference: [`?Logic`](https://rdrr.io/r/base/Logic.html).
 
 ``` r
+
 duckplyr::duckdb_tibble(a = FALSE, b = TRUE, c = NA, .prudence = "stingy") |>
   mutate(!a, a & b, b | c)
 #> # A duckplyr data frame: 6 variables
@@ -190,6 +198,7 @@ Implemented:
 - `strftime(x, format)`
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1, b = NA, .prudence = "stingy") |>
   mutate(is.na(b), if_else(is.na(b), 0, 1), as.integer(b))
 #> # A duckplyr data frame: 5 variables
@@ -215,6 +224,7 @@ Implemented: [`grepl()`](https://rdrr.io/r/base/grep.html),
 [`gsub()`](https://rdrr.io/r/base/grep.html).
 
 ``` r
+
 duckplyr::duckdb_tibble(a = "abbc", .prudence = "stingy") |>
   mutate(grepl("b", a), substr(a, 2L, 3L), sub("b", "B", a), gsub("b", "B", a))
 #> # A duckplyr data frame: 5 variables
@@ -233,6 +243,7 @@ Implemented:
 [`lubridate::wday()`](https://lubridate.tidyverse.org/reference/day.html).
 
 ``` r
+
 duckplyr::duckdb_tibble(
   a = as.POSIXct("2025-01-11 19:23:46", tz = "UTC"),
   .prudence = "stingy"
@@ -263,6 +274,7 @@ Implemented:
   [`all()`](https://rdrr.io/r/base/all.html)
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1:3, b = c(1, 2, 2), .prudence = "stingy") |>
   summarize(
     sum(a),
@@ -307,6 +319,7 @@ and
 are supported.
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1:3, .prudence = "stingy") |>
   mutate(lag(a), lead(a))
 #> # A duckplyr data frame: 3 variables
@@ -336,9 +349,9 @@ duckplyr::duckdb_tibble(a = 1:3, b = c(2, 3, 1), .prudence = "stingy") |>
 #> # A duckplyr data frame: 4 variables
 #>       a     b `lag(a, order_by = b)` `lead(a, order_by = b)`
 #>   <int> <dbl>                  <int>                   <int>
-#> 1     3     1                     NA                       1
-#> 2     1     2                      3                       2
-#> 3     2     3                      1                      NA
+#> 1     1     2                      3                       2
+#> 2     2     3                      1                      NA
+#> 3     3     1                     NA                       1
 ```
 
 ### Ranking
@@ -363,6 +376,7 @@ implemented is
 [`dplyr::row_number()`](https://dplyr.tidyverse.org/reference/row_number.html).
 
 ``` r
+
 duckplyr::duckdb_tibble(a = c(1, 2, 2, 3), .prudence = "stingy") |>
   mutate(row_number())
 #> # A duckplyr data frame: 2 variables
@@ -380,6 +394,7 @@ duckplyr::duckdb_tibble(a = c(1, 2, 2, 3), .prudence = "stingy") |>
 if the LHS is `.data` or `.env`:
 
 ``` r
+
 b <- 4
 duckplyr::duckdb_tibble(a = 1, b = 2, .prudence = "stingy") |>
   mutate(.data$a + .data$b, .env$b)
@@ -393,12 +408,13 @@ duckplyr::duckdb_tibble(a = 1, b = 2, .prudence = "stingy") |>
 the RHS is a constant with up to 100 values:
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1:3, .prudence = "stingy") |>
   mutate(a %in% c(1, 3)) |>
   collect()
 #> # A tibble: 3 × 2
 #>       a `a %in% c(1, 3)`
-#>   <int> <lgl>           
+#> * <int> <lgl>           
 #> 1     1 TRUE            
 #> 2     2 FALSE           
 #> 3     3 TRUE
@@ -422,6 +438,7 @@ only implemented in the context of
 [`dplyr::arrange()`](https://dplyr.tidyverse.org/reference/arrange.html):
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1:3, .prudence = "stingy") |>
   arrange(desc(a)) |>
   explain()
@@ -432,7 +449,7 @@ duckplyr::duckdb_tibble(a = 1:3, .prudence = "stingy") |>
 #> │       4391854.a DESC      │
 #> └-------------┬-------------┘
 #> ┌-------------┴-------------┐
-#> │     R_DATAFRAME_SCAN      │
+#> │      R_DATAFRAME_SCAN     │
 #> │    --------------------   │
 #> │      Text: data.frame     │
 #> │       Projections: a      │
@@ -444,6 +461,7 @@ duckplyr::duckdb_tibble(a = 1:3, .prudence = "stingy") |>
 [`suppressWarnings()`](https://rdrr.io/r/base/warning.html) is a no-op:
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1, .prudence = "stingy") |>
   mutate(suppressWarnings(a + 1))
 #> # A duckplyr data frame: 2 variables
@@ -474,6 +492,7 @@ performance reasons, duckplyr does not enable output order stability by
 default.
 
 ``` r
+
 duckplyr::flights_df() |>
   duckplyr::as_duckdb_tibble() |>
   distinct(day) |>
@@ -481,7 +500,7 @@ duckplyr::flights_df() |>
 #> # A duckplyr data frame: 1 variable
 #>   `paste(day, collapse = " ")`                                         
 #>   <chr>                                                                
-#> 1 5 9 11 14 15 16 17 22 26 30 31 2 10 18 28 29 1 7 8 13 19 21 25 27 3 …
+#> 1 5 9 11 14 15 16 17 22 26 30 31 2 10 18 28 29 3 4 6 12 20 23 24 1 7 8…
 
 duckplyr::flights_df() |>
   distinct(day) |>
@@ -499,6 +518,7 @@ details. With this setting, the output order is stable, but the plans
 are more complicated, and DuckDB needs to do more work.
 
 ``` r
+
 duckplyr::flights_df() |>
   duckplyr::as_duckdb_tibble() |>
   distinct(day) |>
@@ -518,7 +538,7 @@ duckplyr::flights_df() |>
 #> │       ~336,776 rows       │
 #> └-------------┬-------------┘
 #> ┌-------------┴-------------┐
-#> │     R_DATAFRAME_SCAN      │
+#> │      R_DATAFRAME_SCAN     │
 #> │    --------------------   │
 #> │      Text: data.frame     │
 #> │      Projections: day     │
@@ -540,37 +560,20 @@ withr::with_envvar(
 #> │ 42.___row_number ASC│
 #> └-------------┬-------------┘
 #> ┌-------------┴-------------┐
-#> │         PROJECTION        │
+#> │       HASH_GROUP_BY       │
 #> │    --------------------   │
-#> │             #0            │
-#> │             #1            │
+#> │         Groups: #0        │
+#> │    Aggregates: min(#1)    │
 #> │                           │
-#> │        ~67,355 rows       │
-#> └-------------┬-------------┘
-#> ┌-------------┴-------------┐
-#> │           FILTER          │
-#> │    --------------------   │
-#> │   (___row_number_by = 1)  │
-#> │                           │
-#> │        ~67,355 rows       │
+#> │          ~0 rows          │
 #> └-------------┬-------------┘
 #> ┌-------------┴-------------┐
 #> │         PROJECTION        │
 #> │    --------------------   │
-#> │             #0            │
-#> │             #1            │
-#> │             #2            │
+#> │            day            │
+#> │       ___row_number       │
 #> │                           │
 #> │       ~336,776 rows       │
-#> └-------------┬-------------┘
-#> ┌-------------┴-------------┐
-#> │           WINDOW          │
-#> │    --------------------   │
-#> │        Projections:       │
-#> │     ROW_NUMBER() OVER     │
-#> │ (PARTITION BY day ORDER BY│
-#> │   ___row_number ASC NULLS │
-#> │            LAST)          │
 #> └-------------┬-------------┘
 #> ┌-------------┴-------------┐
 #> │         PROJECTION        │
@@ -587,7 +590,7 @@ withr::with_envvar(
 #> │    ROW_NUMBER() OVER ()   │
 #> └-------------┬-------------┘
 #> ┌-------------┴-------------┐
-#> │     R_DATAFRAME_SCAN      │
+#> │      R_DATAFRAME_SCAN     │
 #> │    --------------------   │
 #> │      Text: data.frame     │
 #> │      Projections: day     │
@@ -602,6 +605,7 @@ In duckplyr, this function returns a numeric value also for integers,
 due to DuckDB’s type stability requirement.
 
 ``` r
+
 duckplyr::duckdb_tibble(a = 1:100) |>
   summarize(sum(a))
 #> # A duckplyr data frame: 1 variable
@@ -646,6 +650,7 @@ the behavior of dplyr is different:
   (with a warning)
 
 ``` r
+
 duckplyr::duckdb_tibble(a = integer(), b = logical()) |>
   summarize(sum(a), any(b), all(b), min(a), max(a))
 #> # A duckplyr data frame: 5 variables
@@ -674,6 +679,7 @@ For completeness, duckplyr returns a logical for
 logical, while dplyr returns an integer.
 
 ``` r
+
 duckplyr::duckdb_tibble(a = c(TRUE, FALSE)) |>
   summarize(min(a), max(a))
 #> # A duckplyr data frame: 2 variables
@@ -700,6 +706,7 @@ This function returns `FALSE` for `NaN` values in duckplyr, while it
 returns `TRUE` in dplyr.
 
 ``` r
+
 duckplyr::duckdb_tibble(a = c(NA, NaN)) |>
   mutate(is.na(a))
 #> # A duckplyr data frame: 2 variables
@@ -725,6 +732,7 @@ silently stripped. This is relevant when working with data frames that
 have row names, such as `mtcars`.
 
 ``` r
+
 # mtcars has character row names
 head(rownames(mtcars))
 #> [1] "Mazda RX4"         "Mazda RX4 Wag"     "Datsun 710"       
@@ -747,6 +755,7 @@ mtcars |>
 To preserve row names, convert them to a column before using duckplyr:
 
 ``` r
+
 mtcars |>
   tibble::rownames_to_column("name") |>
   duckplyr::as_duckdb_tibble() |>

@@ -1,38 +1,203 @@
 # Changelog
 
-## duckplyr 1.1.3.9006 (2025-12-06)
+## duckplyr 1.2.1.9008 (2026-05-10)
 
 ### Continuous integration
 
-- Revert to CRAN duckdb.
+- Only run fledge on pushes to main.
 
-- Fix remote.
+## duckplyr 1.2.1.9007 (2026-05-10)
 
-- Use dev duckdb.
+### Continuous integration
 
-## duckplyr 1.1.3.9005 (2025-11-27)
+- Tweak fledge workflow and ccache action.
 
-### Bug fixes
+## duckplyr 1.2.1.9006 (2026-05-06)
 
-- [`transmute()`](https://dplyr.tidyverse.org/reference/transmute.html)
-  can reference new variables
-  ([\#796](https://github.com/tidyverse/duckplyr/issues/796),
-  [\#819](https://github.com/tidyverse/duckplyr/issues/819)).
+### Continuous integration
+
+- Cosmetics.
+
+- Bump action versions.
+
+- Install clang-format-21.
+
+- Align fledge workflow.
+
+- Harmonize.
+
+## duckplyr 1.2.1.9005 (2026-05-04)
 
 ### Chore
 
-- Move compatibility checks to duckdb
-  ([\#721](https://github.com/tidyverse/duckplyr/issues/721)).
+- Auto-update from GitHub Actions
+  ([\#913](https://github.com/tidyverse/duckplyr/issues/913)).
 
-### Continuous integration
-
-- Fix compatibility with duckdb 1.4.2.
+## duckplyr 1.2.1.9004 (2026-04-11)
 
 ### Documentation
 
-- Add blog post to pkgdown config
-  ([\#612](https://github.com/tidyverse/duckplyr/issues/612),
-  [\#827](https://github.com/tidyverse/duckplyr/issues/827)).
+- Update Plausible analytics snippet
+  ([@jeroenjanssens](https://github.com/jeroenjanssens),
+  [\#910](https://github.com/tidyverse/duckplyr/issues/910)).
+
+## duckplyr 1.2.1.9003 (2026-03-28)
+
+### Features
+
+- Enable [`across()`](https://dplyr.tidyverse.org/reference/across.html)
+  translation for primitive functions such as
+  [`sum()`](https://rdrr.io/r/base/sum.html)
+  ([\#906](https://github.com/tidyverse/duckplyr/issues/906),
+  [\#907](https://github.com/tidyverse/duckplyr/issues/907)).
+
+### Continuous integration
+
+- Ignore failing test with duckdb 1.5.0.
+
+## duckplyr 1.2.1.9002 (2026-03-13)
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#902](https://github.com/tidyverse/duckplyr/issues/902)).
+
+## duckplyr 1.2.1.9001 (2026-03-12)
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#900](https://github.com/tidyverse/duckplyr/issues/900)).
+
+## duckplyr 1.2.1.9000 (2026-03-10)
+
+### fledge
+
+- CRAN release v1.2.1
+  ([\#898](https://github.com/tidyverse/duckplyr/issues/898)).
+
+## duckplyr 1.2.1 (2026-03-09)
+
+CRAN release: 2026-03-10
+
+### Bug fixes
+
+- Filter write-only options before passing to read functions in
+  [`compute_parquet()`](https://duckplyr.tidyverse.org/dev/reference/compute_parquet.md)
+  and
+  [`compute_csv()`](https://duckplyr.tidyverse.org/dev/reference/compute_csv.md)
+  ([\#886](https://github.com/tidyverse/duckplyr/issues/886),
+  [\#887](https://github.com/tidyverse/duckplyr/issues/887)).
+
+### Continuous integration
+
+- Fix failing test on macos
+  ([@joakimlinde](https://github.com/joakimlinde),
+  [\#888](https://github.com/tidyverse/duckplyr/issues/888)).
+
+## duckplyr 1.2.0 (2026-02-24)
+
+CRAN release: 2026-02-25
+
+### Features
+
+- Establish compatibility with dplyr 1.2.0, this is now the minimum
+  required version.
+
+- New
+  [`read_tbl_duckdb()`](https://duckplyr.tidyverse.org/dev/reference/read_tbl_duckdb.md)
+  reads a table from a DuckDB database file by attaching it to the
+  default connection
+  ([\#414](https://github.com/tidyverse/duckplyr/issues/414),
+  [\#828](https://github.com/tidyverse/duckplyr/issues/828)).
+
+  ``` r
+
+  db_path <- tempfile(fileext = ".duckdb")
+  con <- DBI::dbConnect(duckdb::duckdb(), db_path)
+  DBI::dbWriteTable(con, "my_table", data.frame(x = 1:5, y = letters[1:5]))
+  DBI::dbDisconnect(con)
+
+  read_tbl_duckdb(db_path, "my_table") |>
+    filter(x > 2)
+
+  unlink(db_path)
+  ```
+
+- [`first()`](https://dplyr.tidyverse.org/reference/nth.html),
+  [`last()`](https://dplyr.tidyverse.org/reference/nth.html),
+  [`nth()`](https://dplyr.tidyverse.org/reference/nth.html),
+  [`round()`](https://rdrr.io/r/base/Round.html), and
+  [`n()`](https://dplyr.tidyverse.org/reference/context.html) inside
+  `mutate(.by = ...)` are now translated directly to DuckDB
+  ([\#626](https://github.com/tidyverse/duckplyr/issues/626),
+  [\#854](https://github.com/tidyverse/duckplyr/issues/854)).
+
+  ``` r
+
+  duckdb_tibble(g = c("a", "a", "b", "b", "b"), x = c(10, 20, 30, 40, 50), .prudence = "stingy") |>
+    summarise(.by = g, first_x = first(x), last_x = last(x), second_x = nth(x, 2))
+
+  duckdb_tibble(g = c("a", "a", "b", "b"), x = 1:4, .prudence = "stingy") |>
+    mutate(count = n(), .by = g)
+  ```
+
+- [`compute_parquet()`](https://duckplyr.tidyverse.org/dev/reference/compute_parquet.md)
+  and
+  [`compute_csv()`](https://duckplyr.tidyverse.org/dev/reference/compute_csv.md)
+  now accept an `options` argument to pass format-specific settings to
+  the underlying DuckDB operation and also applies them when reading
+  back the data
+  ([\#729](https://github.com/tidyverse/duckplyr/issues/729),
+  [\#821](https://github.com/tidyverse/duckplyr/issues/821)).
+
+  ``` r
+
+  df <- duckdb_tibble(x = 1:3, y = c("a", "b", "c"), .prudence = "stingy")
+  path <- tempfile(fileext = ".parquet")
+  compute_parquet(df, path, options = list(compression = "zstd"))
+  ```
+
+- [`compute_parquet()`](https://duckplyr.tidyverse.org/dev/reference/compute_parquet.md)
+  and
+  [`compute_csv()`](https://duckplyr.tidyverse.org/dev/reference/compute_csv.md)
+  are now generic S3 functions, making it easier to add methods for
+  custom classes
+  ([\#746](https://github.com/tidyverse/duckplyr/issues/746),
+  [\#818](https://github.com/tidyverse/duckplyr/issues/818)).
+
+- Functions with named arguments are now translated to DuckDB
+  ([\#822](https://github.com/tidyverse/duckplyr/issues/822)).
+
+  ``` r
+
+  duckdb_tibble(x = c(1.23, 4.56, 7.89), .prudence = "stingy") |>
+    mutate(y = round(x, digits = 1L))
+  ```
+
+- [`transmute()`](https://dplyr.tidyverse.org/reference/transmute.html)
+  can now reference new variables created within the same call
+  ([\#796](https://github.com/tidyverse/duckplyr/issues/796),
+  [\#819](https://github.com/tidyverse/duckplyr/issues/819)).
+
+  ``` r
+
+  duckdb_tibble(x = 1:3, .prudence = "stingy") |>
+    transmute(y = x * 2, z = y + 10)
+  ```
+
+- Add experimental translation for
+  [`filter_out()`](https://dplyr.tidyverse.org/reference/filter.html)
+  ([\#869](https://github.com/tidyverse/duckplyr/issues/869),
+  [\#870](https://github.com/tidyverse/duckplyr/issues/870)).
+
+  ``` r
+
+  duckdb_tibble(x = 1:3, .prudence = "stingy") |>
+    filter_out(x > 2)
+  ```
+
+### Documentation
 
 - Document `row.names` incompatibility
   ([\#603](https://github.com/tidyverse/duckplyr/issues/603),
@@ -48,42 +213,23 @@
   ([\#364](https://github.com/tidyverse/duckplyr/issues/364),
   [\#824](https://github.com/tidyverse/duckplyr/issues/824)).
 
+- Add blog post to pkgdown config
+  ([\#612](https://github.com/tidyverse/duckplyr/issues/612),
+  [\#827](https://github.com/tidyverse/duckplyr/issues/827)).
+
 - Review contributing guide
   ([\#657](https://github.com/tidyverse/duckplyr/issues/657)).
 
-## duckplyr 1.1.3.9004 (2025-11-17)
+### Chore
 
-### Continuous integration
+- Align internal tests with dplyr 1.2.0
+  ([\#863](https://github.com/tidyverse/duckplyr/issues/863)).
 
-- Install binaries from r-universe for dev workflow
-  ([\#813](https://github.com/tidyverse/duckplyr/issues/813)).
+- Migrate from deprecated qs to qs2
+  ([\#846](https://github.com/tidyverse/duckplyr/issues/846),
+  [\#847](https://github.com/tidyverse/duckplyr/issues/847)).
 
-## duckplyr 1.1.3.9003 (2025-11-12)
-
-### Continuous integration
-
-- Fix reviewdog and add commenting workflow
-  ([\#810](https://github.com/tidyverse/duckplyr/issues/810)).
-
-## duckplyr 1.1.3.9002 (2025-11-11)
-
-### Continuous integration
-
-- Use workflows for fledge
-  ([\#807](https://github.com/tidyverse/duckplyr/issues/807)).
-
-## duckplyr 1.1.3.9001 (2025-11-08)
-
-### Continuous integration
-
-- Sync ([\#805](https://github.com/tidyverse/duckplyr/issues/805)).
-
-## duckplyr 1.1.3.9000 (2025-11-04)
-
-### fledge
-
-- CRAN release v1.1.3
-  ([\#803](https://github.com/tidyverse/duckplyr/issues/803)).
+- Format code with air.
 
 ## duckplyr 1.1.3 (2025-11-04)
 
@@ -390,14 +536,13 @@ CRAN release: 2025-02-07
 
 #### Translations
 
-- Partial support for
+- , [@lionel-](https://github.com/lionel-),, Partial support for
   [`across()`](https://dplyr.tidyverse.org/reference/across.html) in
   [`mutate()`](https://dplyr.tidyverse.org/reference/mutate.html) and
   [`summarise()`](https://dplyr.tidyverse.org/reference/summarise.html)
   ([\#296](https://github.com/tidyverse/duckplyr/issues/296),
   [\#306](https://github.com/tidyverse/duckplyr/issues/306),
-  [\#318](https://github.com/tidyverse/duckplyr/issues/318),
-  [@lionel-](https://github.com/lionel-),
+  [\#3](https://github.com/tidyverse/duckplyr/issues/3)
   [@DavisVaughan](https://github.com/DavisVaughan)).
 
 - Implement `na.rm` handling for
@@ -641,8 +786,8 @@ CRAN release: 2024-05-21
 - [`row_number()`](https://dplyr.tidyverse.org/reference/row_number.html)
   returns integer.
 - `is.na(NaN)` is `TRUE`.
-- `summarise(count = n(), count = n())` creates only one column named
-  `count`.
+- `named`count`, summarise(count = n(), count = n())` creates only one
+  colum.
 - Correct wording in instructions for enabling fallback logging
   ([@TimTaylor](https://github.com/TimTaylor),
   [\#141](https://github.com/tidyverse/duckplyr/issues/141)).
@@ -703,12 +848,11 @@ CRAN release: 2024-03-10
 
 ### Bug fixes
 
-- Forbid reuse of new columns created in
+- , [\#106](https://github.com/tidyverse/duckplyr/issues/106)), Forbid
+  reuse of new columns created in
   [`summarise()`](https://dplyr.tidyverse.org/reference/summarise.html)
-  ([\#72](https://github.com/tidyverse/duckplyr/issues/72),
-  [\#106](https://github.com/tidyverse/duckplyr/issues/106)).
-- [`summarise()`](https://dplyr.tidyverse.org/reference/summarise.html)
-  no longer restores subclass.
+  (#.
+- \`no longer restores subclass, summarise().
 - Disambiguate computation of
   [`log10()`](https://rdrr.io/r/base/Log.html) and
   [`log()`](https://rdrr.io/r/base/Log.html).
@@ -851,10 +995,8 @@ CRAN release: 2023-10-16
 
 ### Bug fixes
 
-- [`summarise()`](https://dplyr.tidyverse.org/reference/summarise.html)
-  keeps `"duckplyr_df"` class
-  ([\#63](https://github.com/tidyverse/duckplyr/issues/63),
-  [\#64](https://github.com/tidyverse/duckplyr/issues/64)).
+- `, `[`#64`](https://github.com/tidyverse/duckplyr/issues/64)`), summarise()`
+  keeps `"duckplyr_df"` class (#.
 
 - Fix compatibility with duckdb \>= 0.9.1.
 

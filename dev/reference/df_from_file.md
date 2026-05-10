@@ -125,7 +125,7 @@ df_from_file(
 #> ℹ Please use `read_file_duckdb()` instead.
 #> # A tibble: 3 × 2
 #>       a b    
-#>   <dbl> <chr>
+#> * <dbl> <chr>
 #> 1     1 d    
 #> 2     2 e    
 #> 3     3 f    
@@ -139,7 +139,7 @@ df_from_file(
 )
 #> # A tibble: 3 × 2
 #>       a b    
-#>   <dbl> <chr>
+#> * <dbl> <chr>
 #> 1     1 d    
 #> 2     2 e    
 #> 3     3 f    

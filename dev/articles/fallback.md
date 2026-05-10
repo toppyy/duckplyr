@@ -4,6 +4,7 @@ This article details the fallback mechanism in duckplyr, which allows
 support for all dplyr verbs and R functions.
 
 ``` r
+
 library(conflicted)
 library(dplyr)
 conflict_prefer("filter", "dplyr")
@@ -29,6 +30,7 @@ This is achieved in two ways:
 The following operation is supported by duckplyr:
 
 ``` r
+
 duckdb <-
   duckplyr::duckdb_tibble(a = 1:3) |>
   arrange(desc(a)) |>
@@ -40,6 +42,7 @@ The [`explain()`](https://dplyr.tidyverse.org/reference/explain.html)
 function shows what happens under the hood:
 
 ``` r
+
 duckdb |>
   explain()
 #> ┌---------------------------┐
@@ -56,7 +59,7 @@ duckdb |>
 #> │       3409599.a DESC      │
 #> └-------------┬-------------┘
 #> ┌-------------┴-------------┐
-#> │     R_DATAFRAME_SCAN      │
+#> │      R_DATAFRAME_SCAN     │
 #> │    --------------------   │
 #> │      Text: data.frame     │
 #> │       Projections: a      │
@@ -86,6 +89,7 @@ The
 function shows the last relation that has been materialized:
 
 ``` r
+
 duckplyr::last_rel()
 #> NULL
 ```
@@ -94,10 +98,11 @@ It is `NULL` because nothing has been computed yet. Converting the
 object to a data frame triggers the computation:
 
 ``` r
+
 duckdb |> collect()
 #> # A tibble: 3 × 1
 #>       b
-#>   <dbl>
+#> * <dbl>
 #> 1     4
 #> 2     3
 #> 3     2
@@ -128,6 +133,7 @@ Using a custom function with a side effect is not supported by DuckDB
 and triggers a dplyr fallback:
 
 ``` r
+
 verbose_plus_one <- function(x) {
   message("Adding one to ", paste(x, collapse = ", "))
   x + 1
@@ -149,6 +155,7 @@ defined. This is confirmed by the
 function:
 
 ``` r
+
 duckplyr::last_rel()
 #> DuckDB Relation: 
 #> ---------------------
@@ -175,10 +182,11 @@ function also confirms indirectly that at least a part of the operation
 is handled by dplyr:
 
 ``` r
+
 fallback |>
   explain()
 #> ┌---------------------------┐
-#> │     R_DATAFRAME_SCAN      │
+#> │      R_DATAFRAME_SCAN     │
 #> │    --------------------   │
 #> │      Text: data.frame     │
 #> │       Projections: b      │
@@ -196,10 +204,11 @@ Converting the final object to a data frame triggers the rest of the
 computation:
 
 ``` r
+
 fallback |> collect()
 #> # A tibble: 3 × 1
 #>       b
-#>   <dbl>
+#> * <dbl>
 #> 1     4
 #> 2     3
 #> 3     2

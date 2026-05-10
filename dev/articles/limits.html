@@ -19,7 +19,10 @@
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Translations">
 <meta name="robots" content="noindex">
-<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="duckplyr.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><!-- Privacy-friendly analytics by Plausible --><script async src="https://plausible.io/js/pa-FkMRH0i0gPvavEz4OV93E.js"></script><script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
@@ -29,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">duckplyr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.3.9006</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.2.1.9008</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,7 +140,7 @@ be bypassed, see <code><a href="../articles/duckdb.html">vignette("duckdb")</a><
 as input nor as a result.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/duckdb_tibble.html">duckdb_tibble</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `duckdb_rel_from_df()` at duckplyr/R/duckplyr_df.R:20:5:</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BBBB00; font-weight: bold;">Error</span><span style="font-weight: bold;"> in `duckdb_rel_from_df()` at duckplyr/R/duckplyr_df.R:26:5:</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> rel_from_df: Can't convert empty data frame to relational.</span></span>
 <span><span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/duckdb_tibble.html">duckdb_tibble</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span>, .prudence <span class="op">=</span> <span class="st">"stingy"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">a</span><span class="op">)</span></span>
@@ -402,9 +405,9 @@ positional matching is implemented.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A duckplyr data frame: 4 variables</span></span></span>
 <span><span class="co">#&gt;       a     b `lag(a, order_by = b)` `lead(a, order_by = b)`</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     3     1                     <span style="color: #BB0000;">NA</span>                       1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     1     2                      3                       2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     2     3                      1                      <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1     2                      3                       2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2     3                      1                      <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3     1                     <span style="color: #BB0000;">NA</span>                       1</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="ranking">Ranking<a class="anchor" aria-label="anchor" href="#ranking"></a>
@@ -459,7 +462,7 @@ a constant with up to 100 values:</p>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/compute.html" class="external-link">collect</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">#&gt;       a `a %in% c(1, 3)`</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>           </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>           </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 TRUE            </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 FALSE           </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 TRUE</span></span>
@@ -489,7 +492,7 @@ a constant with up to 100 values:</p>
 <span><span class="co">#&gt; │       4391854.a DESC      │</span></span>
 <span><span class="co">#&gt; └-------------┬-------------┘</span></span>
 <span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
-<span><span class="co">#&gt; │     R_DATAFRAME_SCAN      │</span></span>
+<span><span class="co">#&gt; │      R_DATAFRAME_SCAN     │</span></span>
 <span><span class="co">#&gt; │    --------------------   │</span></span>
 <span><span class="co">#&gt; │      Text: data.frame     │</span></span>
 <span><span class="co">#&gt; │       Projections: a      │</span></span>
@@ -536,7 +539,7 @@ default.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A duckplyr data frame: 1 variable</span></span></span>
 <span><span class="co">#&gt;   `paste(day, collapse = " ")`                                         </span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 5 9 11 14 15 16 17 22 26 30 31 2 10 18 28 29 1 7 8 13 19 21 25 27 3 …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 5 9 11 14 15 16 17 22 26 30 31 2 10 18 28 29 3 4 6 12 20 23 24 1 7 8…</span></span>
 <span></span>
 <span><span class="fu">duckplyr</span><span class="fu">::</span><span class="fu"><a href="../reference/flights_df.html">flights_df</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">day</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -570,7 +573,7 @@ work.</p>
 <span><span class="co">#&gt; │       ~336,776 rows       │</span></span>
 <span><span class="co">#&gt; └-------------┬-------------┘</span></span>
 <span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
-<span><span class="co">#&gt; │     R_DATAFRAME_SCAN      │</span></span>
+<span><span class="co">#&gt; │      R_DATAFRAME_SCAN     │</span></span>
 <span><span class="co">#&gt; │    --------------------   │</span></span>
 <span><span class="co">#&gt; │      Text: data.frame     │</span></span>
 <span><span class="co">#&gt; │      Projections: day     │</span></span>
@@ -592,37 +595,20 @@ work.</p>
 <span><span class="co">#&gt; │ 42.___row_number ASC│</span></span>
 <span><span class="co">#&gt; └-------------┬-------------┘</span></span>
 <span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
-<span><span class="co">#&gt; │         PROJECTION        │</span></span>
+<span><span class="co">#&gt; │       HASH_GROUP_BY       │</span></span>
 <span><span class="co">#&gt; │    --------------------   │</span></span>
-<span><span class="co">#&gt; │             #0            │</span></span>
-<span><span class="co">#&gt; │             #1            │</span></span>
+<span><span class="co">#&gt; │         Groups: #0        │</span></span>
+<span><span class="co">#&gt; │    Aggregates: min(#1)    │</span></span>
 <span><span class="co">#&gt; │                           │</span></span>
-<span><span class="co">#&gt; │        ~67,355 rows       │</span></span>
-<span><span class="co">#&gt; └-------------┬-------------┘</span></span>
-<span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
-<span><span class="co">#&gt; │           FILTER          │</span></span>
-<span><span class="co">#&gt; │    --------------------   │</span></span>
-<span><span class="co">#&gt; │   (___row_number_by = 1)  │</span></span>
-<span><span class="co">#&gt; │                           │</span></span>
-<span><span class="co">#&gt; │        ~67,355 rows       │</span></span>
+<span><span class="co">#&gt; │          ~0 rows          │</span></span>
 <span><span class="co">#&gt; └-------------┬-------------┘</span></span>
 <span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
 <span><span class="co">#&gt; │         PROJECTION        │</span></span>
 <span><span class="co">#&gt; │    --------------------   │</span></span>
-<span><span class="co">#&gt; │             #0            │</span></span>
-<span><span class="co">#&gt; │             #1            │</span></span>
-<span><span class="co">#&gt; │             #2            │</span></span>
+<span><span class="co">#&gt; │            day            │</span></span>
+<span><span class="co">#&gt; │       ___row_number       │</span></span>
 <span><span class="co">#&gt; │                           │</span></span>
 <span><span class="co">#&gt; │       ~336,776 rows       │</span></span>
-<span><span class="co">#&gt; └-------------┬-------------┘</span></span>
-<span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
-<span><span class="co">#&gt; │           WINDOW          │</span></span>
-<span><span class="co">#&gt; │    --------------------   │</span></span>
-<span><span class="co">#&gt; │        Projections:       │</span></span>
-<span><span class="co">#&gt; │     ROW_NUMBER() OVER     │</span></span>
-<span><span class="co">#&gt; │ (PARTITION BY day ORDER BY│</span></span>
-<span><span class="co">#&gt; │   ___row_number ASC NULLS │</span></span>
-<span><span class="co">#&gt; │            LAST)          │</span></span>
 <span><span class="co">#&gt; └-------------┬-------------┘</span></span>
 <span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
 <span><span class="co">#&gt; │         PROJECTION        │</span></span>
@@ -639,7 +625,7 @@ work.</p>
 <span><span class="co">#&gt; │    ROW_NUMBER() OVER ()   │</span></span>
 <span><span class="co">#&gt; └-------------┬-------------┘</span></span>
 <span><span class="co">#&gt; ┌-------------┴-------------┐</span></span>
-<span><span class="co">#&gt; │     R_DATAFRAME_SCAN      │</span></span>
+<span><span class="co">#&gt; │      R_DATAFRAME_SCAN     │</span></span>
 <span><span class="co">#&gt; │    --------------------   │</span></span>
 <span><span class="co">#&gt; │      Text: data.frame     │</span></span>
 <span><span class="co">#&gt; │      Projections: day     │</span></span>

@@ -13,7 +13,10 @@ df %&amp;gt;% count(a, b) is roughly equivalent to
 df %&amp;gt;% group_by(a, b) %&amp;gt;% summarise(n = n()).
 count() is paired with tally(), a lower-level helper that is equivalent
 to df %&amp;gt;% summarise(n = n()). Supply wt to perform weighted counts,
-switching the summary from n = n() to n = sum(wt).'><meta property="og:image" content="https://duckplyr.tidyverse.org/logo.png"><meta name="robots" content="noindex"><script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="duckplyr.tidyverse.org,all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script></head><body>
+switching the summary from n = n() to n = sum(wt).'><meta property="og:image" content="https://duckplyr.tidyverse.org/logo.png"><meta name="robots" content="noindex"><script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><!-- Privacy-friendly analytics by Plausible --><script async src="https://plausible.io/js/pa-FkMRH0i0gPvavEz4OV93E.js"></script><script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script></head><body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
 
 
@@ -21,7 +24,7 @@ switching the summary from n = n() to n = sum(wt).'><meta property="og:image" co
 
     <a class="navbar-brand me-2" href="../index.html">duckplyr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.3.9006</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.2.1.9008</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -125,7 +128,7 @@ it will use <code>nn</code>. If there's a column called <code>n</code> and <code
 on to <code><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by()</a></code>.</p>
 <p>For <code><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count()</a></code>: if <code>FALSE</code> will include counts for empty groups (i.e. for
 levels of factors that don't exist in the data).</p>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> For <code><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">add_count()</a></code>: deprecated since it
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#defunct" class="external-link"><img src="figures/lifecycle-defunct.svg" alt="[Defunct]"></a> For <code><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">add_count()</a></code>: defunct since it
 can't actually affect the output.</p></dd>
 
 </dl></div>

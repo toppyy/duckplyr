@@ -1,7 +1,7 @@
 # Union
 
 This is a method for the
-[`dplyr::union()`](https://dplyr.tidyverse.org/reference/setops.html)
+[`dplyr::union()`](https://generics.r-lib.org/reference/setops.html)
 generic. `union(x, y)` finds all rows in either x or y, excluding
 duplicates. The implementation forwards to `distinct(union_all(x, y))`.
 
@@ -26,7 +26,7 @@ union(x, y, ...)
 
 ## See also
 
-[`dplyr::union()`](https://dplyr.tidyverse.org/reference/setops.html)
+[`dplyr::union()`](https://generics.r-lib.org/reference/setops.html)
 
 ## Examples
 
